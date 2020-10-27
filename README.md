@@ -15,9 +15,9 @@ tl <- lutl_from_file('audio/R_MIC_200903-165318.mp3')
 #> Warning in min(x, na.rm = na.rm): ningún argumento finito para min; retornando Inf
 #> Warning in max(x, na.rm = na.rm): ningun argumento finito para max; retornando -Inf
 #> Process datetime... 
-#> Elapsed time: 4.52
+#> Elapsed time: 4.44
 
 plot_density(tl)
 ```
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="80%" style="display: block; margin: auto;" />
+<img src="man/figures/README-density_plot-1.png" width="80%" style="display: block; margin: auto;" />

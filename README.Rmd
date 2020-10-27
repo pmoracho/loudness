@@ -27,7 +27,7 @@ library(loudness)
 Package for loudness analysis. It performs a series of analyses from an audio file by first transforming it into a timeline with the loudness values
 
 
-```{r}
+```{r density_plot}
 library(loudness)
 
 tl <- lutl_from_file('audio/R_MIC_200903-165318.mp3')
