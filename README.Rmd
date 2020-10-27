@@ -1,0 +1,37 @@
+---
+title: "Loudness Analysis"
+author: "Patricio Moracho"
+date: "26/10/2020"
+output:
+  md_document:
+    variant: markdown_github
+---
+
+```{r, include=FALSE}
+stopifnot(require(knitr))
+options(width = 90)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  dev = "png",
+  dpi = 150,
+  fig.asp = 0.7,
+  fig.width = 8,
+  out.width = "80%",
+  fig.align = "center"
+)
+library(loudness)
+```
+
+Package for loudness analysis. It performs a series of analyses from an audio file by first transforming it into a timeline with the loudness values
+
+
+```{r}
+library(loudness)
+
+tl <- lutl_from_file('audio/R_MIC_200903-165318.mp3')
+
+plot_density(tl)
+```
+

@@ -138,7 +138,6 @@ lutl_from_file <- function(file,
 #'
 #' @return
 #' @export
-#'
 #' @examples
 #' \dontrun{
 #' data <- lutl_from_file('~/Descargas/ejemplo.wav')
@@ -174,6 +173,22 @@ play <- function(x, ...) {
 
 summary.lutl <- function(x, ...) {summary(x$tldata)}
 
+#' plot_density
+#'
+#' @param x A `lutl` object
+#' @param from From "hour:minute:second" (Default `NA`, from begining of timeline)
+#' @param duration Length in "Hour:minute:second" (Default `NA`, all timeline)
+#' @param ... Anything
+
+#' @return
+#' @importFrom graphics polygon abline
+#' @importFrom stats density quantile
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' plot_density(data)
+#' }
 plot_density <- function(x,
                          from = NA,
                          duration = NA,
@@ -188,5 +203,5 @@ plot_density <- function(x,
   polygon(d, col=c("#6699FF"), border="black")
   abline(v = m, col="red", lwd=3, lty=2)
   abline(v = q["99%"], col="red", lwd=3, lty=2)
-  c
+
 }

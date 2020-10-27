@@ -10,7 +10,8 @@ get_datetime_from_file(filename)
 \item{filename}{file name to process}
 }
 \description{
-get_datetime_from_file
+On Sansa devices with rockbox firmware, files are saved in a format where the recording start
+date and time can be retrieved
 }
 \examples{
 

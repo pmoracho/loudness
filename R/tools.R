@@ -5,7 +5,8 @@
 #' @param cmd Command to execute
 #' @param wait Wait command to finish (default TRUE)
 #' @param echo Print command in console (default FALSE)
-#'
+#' @param ignore.stdout,ignore.stderr a logical (not NA) indicating whether messages written to ‘stdout’
+#'        or ‘stderr’ should be ignored.
 #' @return a value returned from `system` or `shell`
 #' @export
 #'
@@ -55,6 +56,9 @@ try_require <- function(package, fun) {
 }
 
 #' get_datetime_from_file
+#'
+#' On Sansa devices with rockbox firmware, files are saved in a format where the recording start
+#' date and time can be retrieved
 #'
 #' @param filename file name to process
 #'

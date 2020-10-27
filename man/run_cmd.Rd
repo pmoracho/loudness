@@ -18,6 +18,9 @@ run_cmd(
 \item{wait}{Wait command to finish (default TRUE)}
 
 \item{echo}{Print command in console (default FALSE)}
+
+\item{ignore.stdout, ignore.stderr}{a logical (not NA) indicating whether messages written to ‘stdout’
+or ‘stderr’ should be ignored.}
 }
 \value{
 a value returned from `system` or `shell`
