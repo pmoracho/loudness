@@ -10,7 +10,7 @@ dhms(t)
 \item{t}{Time in seconds}
 }
 \value{
-
+a string of time formated
 }
 \description{
 Convert a time expressed in seconds into hour:minute:second format

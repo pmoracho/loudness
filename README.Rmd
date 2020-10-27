@@ -24,14 +24,19 @@ knitr::opts_chunk$set(
 library(loudness)
 ```
 
-Package for loudness analysis. It performs a series of analyses from an audio file by first transforming it into a timeline with the loudness values
+Package for loudness analysis. It performs a series of analyses from an audio file by first transforming it into a timeline with the loudness values. This package depends on the [ffmpeg](https://ffmpeg.org/) tool that should be previously installed.
 
+First, we can load an audio file, to generate a `lutl` object, which is nothing more than, a series of loudness level observations per time.
 
-```{r density_plot}
+```{r load}
 library(loudness)
 
 tl <- lutl_from_file('audio/R_MIC_200903-165318.mp3')
+```
 
-plot_density(tl)
+From the timeline, we can study the distribution of loudness levels: 
+
+```{r density_plot, fig.width=10, fig.height=4}
+loudness::plot_density(tl)
 ```
 

@@ -102,7 +102,7 @@ assert <- function (expr, error) {
 #'
 #' @param t Time in seconds
 #'
-#' @return
+#' @return a string of time formated
 #' @export
 #'
 #' @examples

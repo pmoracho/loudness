@@ -57,7 +57,7 @@ lutl_from_file <- function(file,
         ifelse(is.na(duration), '', paste('-t', duration))
   ) -> cut_param
 
-  ff_cmd <- paste(Sys.which("ffmpeg"), '-i', file, cut_param, "-af ebur128 -f null - 2>", tmpfile)
+  ff_cmd <- paste(Sys.which("ffmpeg"), cut_param, '-i', file, "-af ebur128 -f null - 2>", tmpfile)
 
   cat(paste0("Get loudness from ", file, " using ffmpeg..."), collapse = "\n")
   if (verbose) cat(paste("stats file  :", tmpfile),collapse = "\n")
@@ -70,18 +70,21 @@ lutl_from_file <- function(file,
   assert(file.exists(tmpfile), paste('working file:', tmpfile, 'does not exist!'))
   cat("Parsinng data...", collapse = "\n")
 
-  df <- parse_ffmpeg_out(tmpfile, nlines = 10000, compact_fmt=compact_fmt)
+  df <- parse_ffmpeg_out(tmpfile, nlines = 10000, compact_fmt=FALSE)
 
-  if (compact_fmt) {df <- df[,c("t","M")]}
   # For sansa recordings, skip first records, have outliers
   df <- tail(df, -skip_first_n)
+  # Filter From
+  # df <- df[df$t < as.difftime(from, format = "%H:%M:%S", units = "secs"), ]
 
-  M <- sum(range(df$M)*c(1,-1))
-  S <- sum(range(df$S)*c(1,-1))
-  I <- sum(range(df$I)*c(1,-1))
-  LRA <- sum(range(df$LRA)*c(1,-1))
+  M <- sum(range(df$M, na.rm = FALSE)*c(1,-1))
+  S <- sum(range(df$S, na.rm = FALSE)*c(1,-1))
+  I <- sum(range(df$I), na.rm = FALSE*c(1,-1))
+  LRA <- sum(range(df$LRA, na.rm = FALSE)*c(1,-1))
 
-  # Group by group_by_n observations
+  if (compact_fmt) {df <- df[,c("t","M")]}
+
+    # Group by group_by_n observations
   if (group_by_n > 1) {
     cat("Grouping observations...", collapse = "\n")
     n <- nrow(df)
@@ -107,7 +110,7 @@ lutl_from_file <- function(file,
 
   cat(paste("Elapsed time:", round(Sys.time() - start.time,2)), collapse = "\n")
   structure(
-    list(tldata = df,
+    list(data = df,
          file = file,
          start_date = start_date,
          from = from,
@@ -119,89 +122,13 @@ lutl_from_file <- function(file,
          M = M,
          S = S,
          I = I,
-         Lengh = difftime(head(df$dt,1), tail(df$dt,1))
+         Lenght = difftime(tail(df$dt,1), head(df$dt,1), units = "secs")
          ),
     class = "lutl"
   )
 }
 
 
-#' play.lutl
-#'
-#' Play a lutl object
-#'
-#' @param x A `lutl` object
-#' @param ... Anything
-#' @param from From "hour:minute:second" (Default `NA`, from begining of timeline)
-#' @param duration Length in "Hour:minute:second" (Default `NA`, all timeline)
-#' @param verbose be verbose (default FALSE)
-#'
-#' @return
-#' @export
-#' @examples
-#' \dontrun{
-#' data <- lutl_from_file('~/Descargas/ejemplo.wav')
-#' play(data)
-#' }
-play.lutl <- function(x,
-                      from = NA,
-                      duration = NA,
-                      verbose = FALSE,
-                      ...) {
-
-  paste('-ss',
-        ifelse(is.na(from), '00:00:00', from),
-        ifelse(is.na(duration), '', paste('-t', duration))
-  ) -> cut_param
-
-  ff_cmd <- paste(Sys.which("ffplay"), x$file, cut_param, "-autoexit")
-  if (verbose) cat(paste("ffplay call :", ff_cmd), collapse = "\n")
-  run_cmd(ff_cmd, ignore.stdout = TRUE, ignore.stderr = TRUE)
-}
-
-play_secs <- function(x,
-                      secs = 1,
-                      from = NA,
-                      verbose = FALSE,
-                      ...) {
-  play.lutl(x, from, duration, verbose)
-}
-
-play <- function(x, ...) {
-  UseMethod("play")
-}
-
-summary.lutl <- function(x, ...) {summary(x$tldata)}
-
-#' plot_density
-#'
-#' @param x A `lutl` object
-#' @param from From "hour:minute:second" (Default `NA`, from begining of timeline)
-#' @param duration Length in "Hour:minute:second" (Default `NA`, all timeline)
-#' @param ... Anything
-
-#' @return
-#' @importFrom graphics polygon abline
-#' @importFrom stats density quantile
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' plot_density(data)
-#' }
-plot_density <- function(x,
-                         from = NA,
-                         duration = NA,
-                         ...) {
-
-  d <- density(x$tldata$M)
-  q <- quantile(x$tldata$M,  prob=seq(0, 1, length = 101))
-  m <- mean(x$tldata$M)
-  plot(d, main="Kernel Density of LUFS",
-       ylab="LUFS density",
-       xlab="LUFS Values")
-  polygon(d, col=c("#6699FF"), border="black")
-  abline(v = m, col="red", lwd=3, lty=2)
-  abline(v = q["99%"], col="red", lwd=3, lty=2)
-
-}
+summary.lutl <- function(x, ...) {summary(x$data)}
+head.lutl <- function(x, ...) {head(x$data)}
+tail.lutl <- function(x, ...) {tail(x$data)}
