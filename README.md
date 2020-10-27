@@ -11,15 +11,9 @@ library(loudness)
 
 tl <- lutl_from_file('audio/R_MIC_200903-165318.mp3')
 #> Get loudness from audio/R_MIC_200903-165318.mp3 using ffmpeg... 
-#> Parsinng data...
-#> Warning in min(x, na.rm = na.rm): ningún argumento finito para min; retornando Inf
-#> Warning in max(x, na.rm = na.rm): ningun argumento finito para max; retornando -Inf
-#> Warning in min(x, na.rm = na.rm): ningún argumento finito para min; retornando Inf
-#> Warning in max(x, na.rm = na.rm): ningun argumento finito para max; retornando -Inf
-#> Warning in min(x, na.rm = na.rm): ningún argumento finito para min; retornando Inf
-#> Warning in max(x, na.rm = na.rm): ningun argumento finito para max; retornando -Inf
+#> Parsinng data... 
 #> Process datetime... 
-#> Elapsed time: 4.71
+#> Elapsed time: 4.51
 ```
 
 From the timeline, we can study the distribution of loudness levels:
