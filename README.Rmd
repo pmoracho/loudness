@@ -36,7 +36,7 @@ tl <- lutl_from_file('audio/R_MIC_200903-165318.mp3')
 
 From the timeline, we can study the distribution of loudness levels: 
 
-```{r density_plot, fig.width=10, fig.height=4}
+```{r density_plot, fig.width=10, fig.height=5, fig.align='center'}
 loudness::plot_density(tl)
 ```
 
