@@ -108,7 +108,10 @@ lutl_from_file <- function(file,
     df <- df[, c("dt", order_cols)]
   }
 
+  d <- difftime(tail(df$dt,1), head(df$dt,1), units = "secs")
+
   cat(paste("Elapsed time:", round(Sys.time() - start.time,2)), collapse = "\n")
+  cat(paste("Lenght of tl:", duration(d)), collapse = "\n")
   structure(
     list(data = df,
          file = file,
@@ -122,7 +125,7 @@ lutl_from_file <- function(file,
          M = M,
          S = S,
          I = I,
-         Lenght = difftime(tail(df$dt,1), head(df$dt,1), units = "secs")
+         Lenght = d
          ),
     class = "lutl"
   )
@@ -132,3 +135,13 @@ lutl_from_file <- function(file,
 summary.lutl <- function(x, ...) {summary(x$data)}
 head.lutl <- function(x, ...) {head(x$data)}
 tail.lutl <- function(x, ...) {tail(x$data)}
+
+
+duration <- function(length) {
+  t <- abs(as.numeric(length))
+  sprintf("%02d:%02d:%02d:%02d",
+          t %/% 86400,
+          t %% 86400 %/% 3600,
+          t %% 3600 %/% 60,
+          t %% 60 %/% 1)
+}

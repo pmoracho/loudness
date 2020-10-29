@@ -96,7 +96,7 @@ assert <- function (expr, error) {
 }
 
 
-#' dhms
+#' hms
 #'
 #' Convert a time expressed in seconds into hour:minute:second format
 #'
@@ -106,8 +106,8 @@ assert <- function (expr, error) {
 #' @export
 #'
 #' @examples
-#' dhms(86400)
-dhms <- function(t){
+#' hms(86400)
+hms <- function(t){
   paste(paste(formatC(t %/% (60*60), width = 2, format = "d", flag = "0")
                ,formatC(t %/% 60 %% 60, width = 2, format = "d", flag = "0")
                ,formatC(t %% 60, width = 2, format = "d", flag = "0")

@@ -1,12 +1,17 @@
+play <- function(x, ...) {
+  UseMethod("play")
+}
+
+
 #' play.lutl
 #'
 #' Play a lutl object
 #'
 #' @param x A `lutl` object
-#' @param ... Anything
 #' @param from From "hour:minute:second" (Default `NA`, from begining of timeline)
 #' @param duration Length in "Hour:minute:second" (Default `NA`, all timeline)
 #' @param verbose be verbose (default FALSE)
+#' @param ... Anything
 #'
 #' @export
 #' @examples
@@ -38,6 +43,3 @@ play_secs <- function(x,
   play.lutl(x, from, secs, verbose)
 }
 
-play <- function(x, ...) {
-  UseMethod("play")
-}
