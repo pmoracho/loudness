@@ -4,7 +4,7 @@
 \alias{plot_timeline}
 \title{plot_timeline}
 \usage{
-plot_timeline(x, percentil = NA)
+plot_timeline(x, percentil = NA, nbreaks = 10)
 }
 \arguments{
 \item{x}{a `lutl` object}

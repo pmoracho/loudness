@@ -115,3 +115,9 @@ hms <- function(t){
         )
   )
 }
+
+breaks <- function(x, nbreaks) {
+  ln <- length(x)
+  count <- floor(length(x) / nbreaks)
+  seq(1, ln, by = count)
+}

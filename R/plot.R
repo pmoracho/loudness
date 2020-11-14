@@ -28,9 +28,10 @@ plot_density <- function(x,
 
   plot(d,
        main = "Kernel Density of LUFS timeline",
-       sub = paste("Time Line:", duration),
+       sub = paste("Time Line from", format(x$start_date, "%a %d-%m-%Y"), "(", duration, ")"),
        ylab = "LUFS density",
-       xlab = "LUFS Values")
+       xlab = paste("LUFS Values")
+  )
   polygon(d, col=c("#33CC99"), border="black")
   abline(v = m, col="red", lwd=3, lty=3)
   abline(v = q95, col="red", lwd=3, lty=3)
@@ -55,14 +56,14 @@ plot_density <- function(x,
 #' \dontrun{
 #' plot_timeline(data, percentil=99)
 #' }
-plot_timeline <- function(x, percentil=NA){
+plot_timeline <- function(x, percentil = NA, nbreaks = 10){
 
   duration <- duration(x$Lenght)
   q <- quantile(x$data$M,  prob=seq(0, 1, length = 101))
   if (!is.na(percentil)) M <- ifelse(x$data$M < q[percentil+1], NA, x$data$M)
 
-  horas <- as.integer(nrow(x$data)/36000)
-  xbreaks <- as.POSIXct(levels(cut(x$data$dt, horas)))
+  pbreaks <- breaks(x$data$dt, nbreaks)
+  xbreaks <- x$data$dt[pbreaks]
   plot(x$data$dt, M,
        main = paste("LUFS grater than", q[percentil], "over timeline"),
        sub = paste("Lenght:", duration),
@@ -73,5 +74,7 @@ plot_timeline <- function(x, percentil=NA){
   )
   axis(1,
        at = xbreaks,
+       cex.axis = .75,
+       las=2,
        labels = format(strptime(xbreaks,'%Y-%m-%d %H:%M:%S'),'%H:%M'))
 }

@@ -70,7 +70,8 @@ lutl_from_file <- function(file,
   assert(file.exists(tmpfile), paste('working file:', tmpfile, 'does not exist!'))
   cat("Parsinng data...", collapse = "\n")
 
-  df <- parse_ffmpeg_out(tmpfile, nlines = 10000, compact_fmt=FALSE)
+  # df <- parse_ffmpeg_out(tmpfile, nlines = 10000, compact_fmt=FALSE)
+  df <- parse_ffmpeg_out_fast(tmpfile, compact_fmt=FALSE)
 
   # For sansa recordings, skip first records, have outliers
   df <- tail(df, -skip_first_n)
@@ -84,7 +85,7 @@ lutl_from_file <- function(file,
 
   if (compact_fmt) {df <- df[,c("t","M")]}
 
-    # Group by group_by_n observations
+  # Group by group_by_n observations
   if (group_by_n > 1) {
     cat("Grouping observations...", collapse = "\n")
     n <- nrow(df)
@@ -127,15 +128,65 @@ lutl_from_file <- function(file,
          I = I,
          Lenght = d
          ),
-    class = "lutl"
+    class = c("lutl", "list")
   )
+}
+
+resample <- function(x, group_by_n = 1, adjfun = max) {
+  # Group by group_by_n observations
+  if (group_by_n > 1) {
+    cat("Grouping observations...", collapse = "\n")
+    n <- nrow(x$data)
+    x$data$group <- head(rep(1:n, each=group_by_n), n)
+    group_formula = as.formula(ifelse(x$compact_fmt, "cbind(t,M) ~ group", "cbind(t,M,S,I,LRA) ~ group"))
+    x$data <- aggregate(group_formula, x$data, adjfun)
+    x$data$group <- NULL
+  } else {
+    if (x$compact_fmt) x$data <- x$data[, 1:2]
+  }
+  x
 }
 
 
 summary.lutl <- function(x, ...) {summary(x$data)}
 head.lutl <- function(x, ...) {head(x$data)}
 tail.lutl <- function(x, ...) {tail(x$data)}
+nrow.lutl <- function(x, ...) {nrow(x$data)}
 
+#' save_lutl
+#'
+#' Save a `lutl` object in native R format RDS
+#'
+#' @param x a `lutl` object
+#' @param ... Anything
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' save_lutl(data)
+#' }
+save_lutl <- function(x, ...) {
+  cat(paste("Save lutl into", x$file), collapse='\n')
+  rdsfile <- paste0(tools::file_path_sans_ext(x$file), '.Rds')
+  saveRDS(x, file = rdsfile)
+}
+
+#' load_lutl
+#'
+#' Loads a previously saved 'lutl' object
+#'
+#' @param x `lutl` object filename, like `*.Rds`
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' load_lutl("data.Rds")
+#' }
+load_lutl <- function(x) {
+  readRDS(x)
+}
 
 duration <- function(length) {
   t <- abs(as.numeric(length))
