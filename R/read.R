@@ -4,7 +4,8 @@
 ##' The file is read in as a character vector (length one for \code{read},
 ##' length \code{n} for \code{readlines}).
 ##'
-##' @rdname read
+##' @param file Path to a file.
+##'
 ##' @export
 read <- function(file) {
   file <- normalizePath( as.character(file) )
@@ -14,8 +15,10 @@ read <- function(file) {
   .Call(`_loudness_read`, file, FALSE)
 }
 
-##' @rdname read
+##' Read lines ofa File
+##'
 ##' @param file Path to a file.
+##'
 ##' @export
 ##' @examples
 ##' p <- file.path( R.home(), "NEWS" )

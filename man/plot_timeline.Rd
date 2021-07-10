@@ -10,6 +10,8 @@ plot_timeline(x, percentil = NA, nbreaks = 10)
 \item{x}{a `lutl` object}
 
 \item{percentil}{Limit the plot to sounds above this percentile}
+
+\item{nbreaks}{number of breaks (default 10)}
 }
 \description{
 It is a scatter plot of sound levels on the timeline

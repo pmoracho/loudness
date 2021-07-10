@@ -2,7 +2,6 @@ play <- function(x, ...) {
   UseMethod("play")
 }
 
-
 #' play.lutl
 #'
 #' Play a lutl object
@@ -11,7 +10,7 @@ play <- function(x, ...) {
 #' @param from From "hour:minute:second" (Default `NA`, from begining of timeline)
 #' @param duration Length in "Hour:minute:second" (Default `NA`, all timeline)
 #' @param verbose be verbose (default FALSE)
-#' @param ... Anything
+#' @param ... Anything else
 #'
 #' @export
 #' @examples
@@ -35,6 +34,22 @@ play.lutl <- function(x,
   run_cmd(ff_cmd, ignore.stdout = TRUE, ignore.stderr = TRUE)
 }
 
+#' play_secs
+#'
+#' play some seconds of a lutl object
+#'
+#' @param x A `lutl` object
+#' @param secs number of seconds to play
+#' @param from From "hour:minute:second" (Default `NA`, from begining of timeline)
+#' @param verbose be verbose (default FALSE)
+#' @param ... Anything else
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' data <- lutl_from_file('~/Descargas/ejemplo.wav')
+#' play_secs(data, 5)
+#' }
 play_secs <- function(x,
                       secs = 1,
                       from = NA,
@@ -42,4 +57,3 @@ play_secs <- function(x,
                       ...) {
   play.lutl(x, from, secs, verbose)
 }
-

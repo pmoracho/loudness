@@ -7,5 +7,4 @@
 ##' @name loudness
 ##' @docType package
 ##' @useDynLib loudness, .registration=TRUE
-##' @seealso \code{\link{html}}
 NULL

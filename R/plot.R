@@ -49,6 +49,7 @@ plot_density <- function(x,
 #'
 #' @param x a `lutl` object
 #' @param percentil Limit the plot to sounds above this percentile
+#' @param nbreaks number of breaks (default 10)
 #'
 #' @export
 #' @importFrom graphics axis

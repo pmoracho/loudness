@@ -15,7 +15,7 @@
 
 \item{verbose}{be verbose (default FALSE)}
 
-\item{...}{Anything}
+\item{...}{Anything else}
 }
 \description{
 Play a lutl object
